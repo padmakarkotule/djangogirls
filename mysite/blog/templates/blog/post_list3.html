@@ -6,7 +6,7 @@
         <div>
             <h1><a href="/">Django Girls Blog</a></h1>
         </div>
-        <hr>
+
         <div>
             <p>
                 Dynamic data,posts data using render function from view.<br>
@@ -14,30 +14,18 @@
                 posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')<br>
                 return render(request, 'blog/post_list.html', {'posts': posts})<br>
             </p>
-            <b>
+            <b> <u>
                 {{posts}}
+                </u>
             </b>
         </div>
-        <hr>
         <div>
-            <p>
-                Using %for % and %endfor %
-            </p>
-            {% for x in posts %}
-                {{ x }}
-            {% endfor %}
+            
+
+
         </div>
-        <hr>
-        <div>
-            {% for post in posts %}
-                <div>
-                    <p>published: {{ post.published_date }}</p>
-                    <h2><a href="">{{ post.title }}</a></h2>
-                    <p>{{ post.text|linebreaksbr }}</p>
-                </div>
-            {% endfor %}
-        </div>
-        <hr>
+
+
 
 
 
