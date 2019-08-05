@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
-from .models import Post
-from .forms import PostForm, Testform
+from .models import Post, Comment
+from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -69,17 +69,29 @@ def post_remove(request, pk):
     post.delete()
     return redirect('post_list')
 
-def testform(request):
+
+def add_comment_to_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
-        form = Testform(request.POST)
+        form = CommentForm(request.POST)
         if form.is_valid():
-            form = form.cleaned_data
-            #data = form
-            #data = form.save(commit=False)
-            #your_fname = request.your_fname
-            # post.published_date = timezone.now()
-            #data.save()
-            return render(request, 'blog/testform_list.html', {'form':form})
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect('post_detail', pk=post.pk)
     else:
-        form = Testform()
-        return render(request, 'blog/testform.html',{'form': form})
+        form = CommentForm()
+    return render(request, 'blog/add_comment_to_post.html', {'form': form})
+
+
+@login_required
+def comment_approve(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.approve()
+    return redirect('post_detail', pk=comment.post.pk)
+
+@login_required
+def comment_remove(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.delete()
+    return redirect('post_detail', pk=comment.post.pk)

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, Comment
 
 
 class PostForm(forms.ModelForm):
@@ -14,8 +14,8 @@ class PostForm(forms.ModelForm):
 # your_name = forms.CharField(label='Your name', max_length=100)
 
 
-# t
+class CommentForm(forms.ModelForm):
 
-class Testform(forms.Form):
-    your_fname = forms.CharField(label='Your First name', max_length=25)
-    your_lname = forms.CharField(label='Your Last name', max_length=35)
+    class Meta:
+        model = Comment
+        fields = ('author', 'text',)
